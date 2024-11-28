@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    min-height: 100vh; 
+    margin: 0;
+    padding: 0;
+}
+#heading{
+    font-size: 35px;
+    background-color: white;
+    box-shadow: 0px 1px 4px black;
+}
+.signUp-form,#signUpForm{
+    width: 100%;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+.signUp-form.active{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.fieldset{
+    width: 50%;
+    min-width: 300px; 
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    background-color: rgba(255,255,255,0.30);
+    box-shadow: 0 2px 20px black;
+    text-align: center;
+
+}
+.field{
+    flex-wrap: wrap;
+    text-align: center;
+}
+.label{
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bolder;
+    width: 40%;
+    min-width: 200px;
+    display: inline-block;
+}
+.input{
+    width: calc(100% - 500px);
+    min-width: 200px;
+    height: 30px;
+    padding-left: 10px;
+    border: 1px solid black;
+   
+}
+.toggle-password {
+    cursor: pointer;
+    margin-left: -30px;
+    position: relative;
+    z-index: 2;
+}
+
+.toggle-password:hover {
+    color: #007bff;
+}
+
+.input[type="password"] {
+    padding-right: 30px; /* Space for the icon */
+}
+
+.label,.input{
+    margin-bottom: 30px;
+}
+.register{
+    width: 100%;
+}
+#register{
+    cursor: pointer;
+    text-decoration: none;
+    background-color:blue;
+    border-radius: 10px;
+    color: white;
+    font-size: 17px;
+    padding: 0 20px 0 20px;
+    box-shadow: 0 5px 10px black;
+    transition: background-color 0.3s ease;
+}
+#register:hover{
+    background-color:cornflowerblue;
+}
+
+</style>
+<body>
+    <div class="signUp-form" id="signUpForm">
+        <fieldset class="fieldset">
+            <legend>
+                <h1 id="heading">REGISTRATION</h1>
+            </legend>
+            <div class="field">
+                <label class="label">First Name: </label>
+                <input type="text" placeholder="First name" name="fname"  class="input" required/>
+                <label class="label">Last Name: </label>
+                <input type="text" placeholder="Last Name" name="lname" class="input"  required/>
+                <label class="label">Contact No: </label>
+                <input type="text" placeholder="***** 90876" minlength="10" name="contact" class="input"  required/>
+                <label class="label">Email: </label>
+                <input type="text" placeholder="Email Address" name="email" id="email" class="input" required/>
+                <span id="emailError" style="color: red; display: none;">Please enter a valid email address.</span>
+                <label class="label">Password: </label>
+                <input type="password" placeholder="" name="password" id="password" class="input"  required/>
+                <i class="fas fa-eye-slash toggle-password" onclick="togglePasswordVisibility('password', this)"></i>
+                <span id="passwordError" style="color: red; display: none;">Password must contain at least one uppercase letter, one number, and one special character.</span>
+                <label class="label">Confirm Password: </label>
+                <input type="password" placeholder="" name="confirmPassword" id="confirmPassword" class="input"  required/>
+                <i class="fas fa-eye-slash toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)"></i>
+                <span id="confirmPasswordError" style="color: red; display: none;">Passwords do not match.</span>
+            </div>
+            <div class="register">
+                <button type="button" id="register" onclick="validateForm()">Register</button>
+            </div>
+        </fieldset>
+        </div>
+        </div>
+        <script>
+            function validateEmail() {
+    const email = document.getElementById('email').value;
+    const emailError = document.getElementById('emailError');
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+        emailError.style.display = 'block';
+        return false;
+    } else {
+        emailError.style.display = 'none';
+        return true;
+    }
+}
+
+function validatePassword() {
+    const password = document.getElementById('password').value;
+    const passwordError = document.getElementById('passwordError');
+    const passwordPattern = /^(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordPattern.test(password)) {
+        passwordError.style.display = 'block';
+        return false;
+    } else {
+        passwordError.style.display = 'none';
+        return true;
+    }
+}
+
+function validateConfirmPassword() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+    if (password !== confirmPassword) {
+        confirmPasswordError.style.display = 'block';
+        return false;
+    } else {
+        confirmPasswordError.style.display = 'none';
+        return true;
+    }
+}
+
+function validateForm() {
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
+    const isConfirmPasswordValid = validateConfirmPassword();
+
+    if (isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+        document.querySelector('form').submit();
+    }
+}
+
+function togglePasswordVisibility(inputId, iconElement) {
+    const passwordInput = document.getElementById(inputId);
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        iconElement.classList.add('fa-eye');
+        iconElement.classList.remove('fa-eye-slash');
+    } else {
+        passwordInput.type = "password";
+        iconElement.classList.add('fa-eye-slash');
+        iconElement.classList.remove('fa-eye');
+    }
+}
+
+function showForm(formType) {
+    var loginForm = document.getElementById('loginForm');
+    var signUpForm = document.getElementById('signUpForm');
+    var loginTab = document.getElementById('loginTab');
+    var signUpTab = document.getElementById('signUpTab');
+
+    if (formType === 'login') {
+        loginForm.style.display = 'flex';
+        signUpForm.style.display = 'none';
+        loginTab.classList.add('active');
+        signUpTab.classList.remove('active');
+    } else {
+        loginForm.style.display = 'none';
+        signUpForm.style.display = 'flex';
+        loginTab.classList.remove('active');
+        signUpTab.classList.add('active');
+    }
+}
+
+        </script>
+</body>
+</html>
